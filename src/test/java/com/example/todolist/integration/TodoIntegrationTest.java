@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +36,7 @@ public class TodoIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(MockMvcRequestBuilders.get("/todos"))
+        mockMvc.perform(get("/todos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].text").value("Eat"))
@@ -99,13 +99,21 @@ public class TodoIntegrationTest {
                 .andExpect(jsonPath("$.done").value("false"));
     }
 
-//    public List<Todo> todolistDataFactory() {
-//        List<Todo> todoList = new ArrayList<>();
-//        todoList.add(new Todo(1, "Eat", true));
-//        todoList.add(new Todo(2, "Code", true));
-//        todoList.add(new Todo(3, "Exercise", true));
-//        todoList.add(new Todo(4, "Sleep", false));
-//
-//        return todoList;
-//    }
+    @Test
+    public void should_not_exist_when_call_delete_todo_given_id() throws Exception {
+        //given
+        Integer id = todoRepository.save(new Todo(1, "Eat", true)).getId();
+
+        //when
+        //then
+        mockMvc.perform(delete("/todos/{id}", id)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/todos")
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value("0"));
+
+    }
 }
