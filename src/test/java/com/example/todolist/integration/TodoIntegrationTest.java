@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoIntegarationTest {
+public class TodoIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -62,9 +62,28 @@ public class TodoIntegarationTest {
     }
 
     @Test
-    public void should_return_update_todo_when_call_update_given_different_done() throws Exception {
+    public void should_return_update_text_when_call_update_given_different_text() throws Exception {
         //given
-        todoRepository.save(new Todo(1, "Eat", true));
+        Integer id = todoRepository.save(new Todo(1, "Eat", true)).getId();
+        String todoJson = "{\n" +
+                "    \"text\": \"Sleep\",\n" +
+                "    \"done\": true\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.put("/todos/{id}", id)
+                .contentType(APPLICATION_JSON)
+                .content(todoJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.text").value("Sleep"))
+                .andExpect(jsonPath("$.done").value("true"));
+    }
+
+    @Test
+    public void should_return_update_done_when_call_update_given_different_done() throws Exception {
+        //given
+        Integer id = todoRepository.save(new Todo(1, "Eat", true)).getId();
         String todoJson = "{\n" +
                 "    \"text\": \"Eat\",\n" +
                 "    \"done\": false\n" +
@@ -72,10 +91,10 @@ public class TodoIntegarationTest {
 
         //when
         //then
-        mockMvc.perform(post("/todos")
+        mockMvc.perform(MockMvcRequestBuilders.put("/todos/{id}", id)
                 .contentType(APPLICATION_JSON)
                 .content(todoJson))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.text").value("Eat"))
                 .andExpect(jsonPath("$.done").value("false"));
     }
