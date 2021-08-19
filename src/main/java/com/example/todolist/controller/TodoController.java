@@ -31,4 +31,9 @@ public class TodoController {
         return todoService.AddTodos(todo);
     }
 
+    @PutMapping(path = "/{id}")
+    public Todo updateTodo(@PathVariable Integer id, @RequestBody Todo todoToBeUpdated){
+        return todoService.update(id, todoToBeUpdated);
+    }
+
 }
