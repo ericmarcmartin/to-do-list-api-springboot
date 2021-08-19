@@ -23,6 +23,11 @@ public class Todo {
 
     }
 
+    public Todo(String eat, boolean done) {
+        this.text = text;
+        this.done = done;
+    }
+
     public Integer getId() {
         return id;
     }
