@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -27,11 +28,11 @@ public class TodoService {
 
     private Todo updateTodoInfo(Todo todo, Todo todoToBeUpdated) {
         todoToBeUpdated.setId(todo.getId());
-        if(todo.getText().equals(todoToBeUpdated.getText())){
+        if(isNull(todoToBeUpdated.getText())){
             todoToBeUpdated.setDone(!todo.isDone());
+            todoToBeUpdated.setText(todo.getText());
             return todoToBeUpdated;
         }
-        todoToBeUpdated.setText(todo.getText());
         return todoToBeUpdated;
     }
 

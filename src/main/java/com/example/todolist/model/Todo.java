@@ -23,7 +23,7 @@ public class Todo {
 
     }
 
-    public Todo(String eat, boolean done) {
+    public Todo(String text, boolean done) {
         this.text = text;
         this.done = done;
     }
