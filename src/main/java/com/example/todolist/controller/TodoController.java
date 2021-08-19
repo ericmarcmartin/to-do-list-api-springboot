@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins ={"http://localhost:3001/", "http://localhost:8090/"})
+//@CrossOrigin(origins ={"http://localhost:3001/", "http://localhost:8090/"})
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
@@ -21,7 +21,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @GetMapping
     public List<Todo> getTodos() {
         return todoService.getAll();
