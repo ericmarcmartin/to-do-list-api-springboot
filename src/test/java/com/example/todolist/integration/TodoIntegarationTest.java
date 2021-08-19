@@ -29,7 +29,6 @@ public class TodoIntegarationTest {
         todoRepository.deleteAll();
     }
 
-
     @Test
     public void should_return_todos_when_call_get_all_api() throws Exception {
         //given
@@ -60,6 +59,25 @@ public class TodoIntegarationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.text").value("Eat"))
                 .andExpect(jsonPath("$.done").value("true"));
+    }
+
+    @Test
+    public void should_return_update_todo_when_call_update_given_different_done() throws Exception {
+        //given
+        todoRepository.save(new Todo(1, "Eat", true));
+        String todoJson = "{\n" +
+                "    \"text\": \"Eat\",\n" +
+                "    \"done\": false\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc.perform(post("/todos")
+                .contentType(APPLICATION_JSON)
+                .content(todoJson))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.text").value("Eat"))
+                .andExpect(jsonPath("$.done").value("false"));
     }
 
 //    public List<Todo> todolistDataFactory() {

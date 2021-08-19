@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 @Service
 public class TodoService {
     @Autowired
     TodoRepository todoRepository;
+
     public List<Todo> getAll() {
-       return todoRepository.findAll();
+        return todoRepository.findAll();
     }
 
     public Todo AddTodos(Todo todo) {
@@ -28,7 +28,7 @@ public class TodoService {
 
     private Todo updateTodoInfo(Todo todo, Todo todoToBeUpdated) {
         todoToBeUpdated.setId(todo.getId());
-        if(isNull(todoToBeUpdated.getText())){
+        if (isNull(todoToBeUpdated.getText())) {
             todoToBeUpdated.setDone(!todo.isDone());
             todoToBeUpdated.setText(todo.getText());
             return todoToBeUpdated;
